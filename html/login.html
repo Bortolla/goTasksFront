@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body onload="checkAuthStatus('login.html')">
+    <form>
+        <label for="loginUsername">Username:</label><br>
+        <input type="text" id="loginUsername" name="username">
+        <br>
+        <span id='loginUsernameSpan'></span>
+
+        <br>
+
+        <label for="loginPassword">Password:</label><br>
+        <input type="text" id="loginPassword" name="lname">
+        <br>
+        <span id='loginPasswordSpan'></span>
+        <span id='wrongLoginInfoSpan'></span>
+
+        <br>
+        <br>
+
+        <input type="button" value="Login" onclick="submitLoginForm()">
+
+        <br>
+
+        <a href="signUp.html">Sign Up</a>
+    </form>
+
+
+
+
+    <script src="../js/main.js"></script>
+</body>
+</html>
