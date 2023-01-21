@@ -41,9 +41,9 @@ function submitLoginForm()
 
 function apiCallToCheckLoginInfo(username, password)
 {
-    const urlToCheckLoginInfo = '../../backEnd/checkLogin.php';
+    const urlToCheckLoginInfo = 'http://localhost:3333/login';
 
-    const data = {"username":username, "password":password};
+    const data = {"nome":username, "senha":password};
     jsonData = JSON.stringify(data);
 
     fetch(urlToCheckLoginInfo, {method:'POST', body: jsonData})
@@ -52,7 +52,7 @@ function apiCallToCheckLoginInfo(username, password)
     {
         if (jsonObject['status'] == 500)
         {
-            window.location.href = 'http://localhost/trabalhoLinguagens/frontEnd/html/somethingWentWrong.html';;
+            window.location.href = '../html/somethingWentWrong.html';
         }
         else if (jsonObject['status'] == 401)
         {
@@ -60,13 +60,14 @@ function apiCallToCheckLoginInfo(username, password)
         }
         else if (jsonObject['status'] == 200)
         {
-            localStorage.setItem('username', username);
-            localStorage.setItem('password', password);
-            window.location.href = 'http://localhost/trabalhoLinguagens/frontEnd/html/main.html';
+            localStorage.setItem('nome', username);
+            localStorage.setItem('senha', password);
+            localStorage.setItem('id', jsonObject['usuarioId']);
+            window.location.href = '../html/main.html';
         }
     })
     .catch(error => {
-        window.location.href = 'http://localhost/trabalhoLinguagens/frontEnd/html/somethingWentWrong.html';;
+        window.location.href = '../html/somethingWentWrong.html';
     })
     
 }
@@ -122,9 +123,9 @@ function submitSignUpForm()
 
 function createUser(username, password)
 {
-    const urlToCheckLoginInfo = '../../backEnd/cadastrar.php';
+    const urlToCheckLoginInfo = 'http://localhost:3333/register';
 
-    const data = {"username":username, "password":password};
+    const data = {"nome":username, "senha":password};
     jsonData = JSON.stringify(data);
 
     fetch(urlToCheckLoginInfo, {method:'POST', body: jsonData})
@@ -133,7 +134,7 @@ function createUser(username, password)
     {
         if (jsonObject['status'] == 500)
         {
-            window.location.href = 'http://localhost/trabalhoLinguagens/frontEnd/html/somethingWentWrong.html';;
+            window.location.href = '../html/somethingWentWrong.html';
         }
         else if (jsonObject['status'] == 409)
         {
@@ -148,27 +149,27 @@ function createUser(username, password)
         }
     })
     .catch(error => {
-        window.location.href = 'http://localhost/trabalhoLinguagens/frontEnd/html/somethingWentWrong.html';;
+        window.location.href = '../html/somethingWentWrong.html';
     })
 }
 
 function checkAuthStatus(currentPage)
 {
-    username = localStorage.getItem('username');
-    password = localStorage.getItem('password');
+    username = localStorage.getItem('nome');
+    password = localStorage.getItem('senha');
 
     if (!username || !password)
     {
         if (currentPage == 'main.html')
         {
-            window.location.href = 'http://localhost/trabalhoLinguagens/frontEnd/html/login.html';
+            window.location.href = '../html/login.html';
         }
     }
     else
     {
-        const urlToCheckLoginInfo = '../../backEnd/checkLogin.php';
+        const urlToCheckLoginInfo = 'http://localhost:3333/login';
 
-        const data = {"username":username, "password":password};
+        const data = {"nome":username, "senha":password};
         jsonData = JSON.stringify(data);
 
         fetch(urlToCheckLoginInfo, {method:'POST', body: jsonData})
@@ -177,41 +178,152 @@ function checkAuthStatus(currentPage)
         {
             if (jsonObject['status'] == 500)
             {
-                window.location.href = 'http://localhost/trabalhoLinguagens/frontEnd/html/somethingWentWrong.html';;
+                window.location.href = '../html/somethingWentWrong.html';
             }
             else if (jsonObject['status'] == 401)
             {
-                localStorage.removeItem('username');
-                localStorage.removeItem('password');
+                localStorage.removeItem('nome');
+                localStorage.removeItem('senha');
                 if (currentPage == 'main.html')
                 {
-                    window.location.href = 'http://localhost/trabalhoLinguagens/frontEnd/html/login.html';
+                    window.location.href = '../html/login.html';
                 }
             }
             else if (jsonObject['status'] == 200)
             {
                 if (currentPage != 'main.html')
                 {
-                    window.location.href = 'http://localhost/trabalhoLinguagens/frontEnd/html/main.html';
+                    window.location.href = '../html/main.html';
                 }
-                document.getElementById('welcome').innerText = 'Hello ' + localStorage.getItem('username') + ' :)';
+                document.getElementById('welcome').innerText = 'Hello ' + localStorage.getItem('nome') + ' :)';
+                getTasks();
             }
         })
         .catch(error => 
         {
-            window.location.href = 'http://localhost/trabalhoLinguagens/frontEnd/html/somethingWentWrong.html';;
+
         })
     }
 }
 
 function createTask()
 {
+    const task = document.getElementById('taskInput').value;
+    userId = parseInt(localStorage.getItem('id'));
+
+    if (task.length < 1)
+    {
+        document.getElementById('taskSpan').innerText = 'Please inform a task to create';
+    }
+    else
+    {
+        const urlToCreateTask = 'http://localhost:3333/createTask';
+
+        const data = {"usuarioId":userId, "nomeTarefa":task};
+        jsonData = JSON.stringify(data);
+
+        fetch(urlToCreateTask, {method:'POST', body: jsonData})
+        .then(response => response.json())
+        .then(jsonObject => 
+        {
+            if (jsonObject['status'] == 500)
+            {
+                window.location.href = '../html/somethingWentWrong.html';
+            }
+            else if (jsonObject['status'] == 200)
+            {
+                document.getElementById('taskInput').value = '';
+                document.getElementById('taskSpan').innerText = 'Task created';
+                document.getElementById('tasksDiv').innerHTML = '';
+                getTasks();
+            }
+        })
+        .catch(error => 
+        {
+            window.location.href = '../html/somethingWentWrong.html';
+        })
+    }
+}
+
+function getTasks()
+{
+    userId = parseInt(localStorage.getItem('id'));
+
+    const urlToGetTasks = 'http://localhost:3333/getTasks';
+
+    const data = {"usuarioId":userId};
+    jsonData = JSON.stringify(data);
+
+    fetch(urlToGetTasks, {method:'POST', body: jsonData})
+    .then(response => response.json())
+    .then(jsonObject => 
+    {
+        if (jsonObject['status'] == 404)
+        {
+            localStorage.removeItem('nome');
+            localStorage.removeItem('senha');
+            localStorage.removeItem('id');
+            window.location.href = '../html/login.html';
+        }
+        else if (jsonObject['status'] == 200)
+        {
+            const tasksDiv = document.getElementById('tasksDiv');
+
+            for (task in jsonObject['tasks']) {
+                taskNum = parseInt(task) + 1;
+                tasksDiv.innerHTML = tasksDiv.innerHTML + 'Task ' + taskNum + ':';
+                tasksDiv.innerHTML = tasksDiv.innerHTML + '<p id="task' + taskNum + '">' + jsonObject['tasks'][task] + '</p>' + '<button onclick="deleteTask(' + taskNum + ')">Delete</button>' + '<br>';
+              }
+        }
+    })
+    .catch(error => 
+    {
+        window.location.href = '../html/somethingWentWrong.html';
+    })
     
+}
+
+function deleteTask(taskNumber)
+{
+    const taskId = String('task' + taskNumber);
+
+    const taskToDelete = document.getElementById(taskId).innerText;
+    console.log(taskToDelete);
+
+    userId = parseInt(localStorage.getItem('id'));
+
+    const urlToDeleteTasks = 'http://localhost:3333/deleteTask';
+
+    const data = {"usuarioId":userId, "nomeDaTarefa":taskToDelete};
+    jsonData = JSON.stringify(data);
+
+    fetch(urlToDeleteTasks, {method:'POST', body: jsonData})
+    .then(response => response.json())
+    .then(jsonObject => 
+    {
+        if (jsonObject['status'] == 500)
+        {
+
+        }
+        else if (jsonObject['status'] == 404)
+        {
+            window.location.href = '../html/main.html';
+        }
+        else if (jsonObject['status'] == 200)
+        {
+            document.getElementById('tasksDiv').innerHTML = '';
+            getTasks();
+        }
+    })
+    .catch(error => 
+    {
+
+    })
 }
 
 function logOut()
 {
-    localStorage.removeItem('username');
-    localStorage.removeItem('password');
-    window.location.href = 'http://localhost/trabalhoLinguagens/frontEnd/html/login.html';
+    localStorage.removeItem('nome');
+    localStorage.removeItem('senha');
+    window.location.href = '../html/login.html';
 }

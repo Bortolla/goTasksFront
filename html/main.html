@@ -7,10 +7,16 @@
     <title>Document</title>
 </head>
 <body onload="checkAuthStatus('main.html')">
-    
-    <button onclick="logOut()">LogOut</button>
-
     <div id="welcome"></div>
+    <button onclick="logOut()">LogOut</button>
+    <br>
+
+    <input type="text" name="" id="taskInput">
+    <button onclick="createTask()">CreateTask</button>
+    <br>
+    <span id='taskSpan'></span>
+
+    <div id="tasksDiv"></div>
 
     <script src="../js/main.js"></script>
 </body>
