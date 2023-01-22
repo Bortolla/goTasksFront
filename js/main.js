@@ -291,10 +291,11 @@ function deleteTask(taskNumber)
     console.log(taskToDelete);
 
     userId = parseInt(localStorage.getItem('id'));
+    console.log(userId)
 
     const urlToDeleteTasks = 'http://localhost:3333/deleteTask';
 
-    const data = {"usuarioId":userId, "nomeDaTarefa":taskToDelete};
+    const data = {"usuarioId":userId, "nomeTarefa":taskToDelete};
     jsonData = JSON.stringify(data);
 
     fetch(urlToDeleteTasks, {method:'POST', body: jsonData})
