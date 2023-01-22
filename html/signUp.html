@@ -1,41 +1,52 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="../css/app.css">
+    <title>Cadastrar</title>
 </head>
+
 <body onload="checkAuthStatus('signUp.html')">
+    <div class="container-fluid">
+        <div class="row justify-content-center mt-5">
+            <section class="col-12 colsm-6 col-md-3">
+                <form class="form-container">
+                    <h2 class="text-center mt-2">Fazer Cadastro</h2>
+                    <div class="form-group">
+                        <label for="signUpUsername">Username:</label>
+                        <input type="text" class="form-control" id="signUpUsername" name="username">
 
-    <form>
-        <label for="signUpUsername">Username:</label><br>
-        <input type="text" id="signUpUsername" name="username">
-        <br>
-        <span id='signUpUsernameSpan'></span>
+                        <span id='signUpUsernameSpan'></span>
+                    </div>
+                    <div class="form-group">
+                        <label for="signUpPassword">Password:</label>
+                        <input type="text" class="form-control" id="signUpPassword" name="lname">
+                        <span id='signUpPasswordSpan'></span>
+                    </div>
 
-        <br>
+                    <br>
+                    <div class="form-group">
+                        <label for="confirmPassword">Confirm password:</label>
+                        <input type="text" class="form-control" id="confirmPassword" name="lname">
+                        <span id='confirmPasswordSpan'></span>
+                    </div>
 
-        <label for="signUpPassword">Password:</label><br>
-        <input type="text" id="signUpPassword" name="lname">
-        <br>
-        <span id='signUpPasswordSpan'></span>
-
-        <br>
-
-        <label for="confirmPassword">Confirm password:</label><br>
-        <input type="text" id="confirmPassword" name="lname">
-        <br>
-        <span id='confirmPasswordSpan'></span>
-        
-        <br>
-        <br>
-
-        <input type="button" value="Enviar" onclick="submitSignUpForm()">
-        <br>
-        <a href="login.html">Log In</a>
-    </form>
+                    <div class="botton-login-cadastro">
+                        <input class="btn btn-primary btn-block" type="button" value="Enviar"
+                            onclick="submitSignUpForm()">
+                        <button class="btn btn-primary btn-block"> <a href="login.html">Login</a></button>
+                    </div>
+                </form>
+            </section>
+        </div>
+    </div>
 
     <script src="../js/main.js"></script>
 </body>
+
 </html>

@@ -1,0 +1,36 @@
+body {
+    background-color: #1B1F27;
+}
+
+
+.form-container {
+    font-family: Arial, Helvetica, sans-serif;
+    border-radius: 10px;
+    padding: 30px;
+    background-color: #181920;
+    color: #ffffff;
+}
+
+h2 {
+    display: flex;
+    justify-content: center;
+}
+
+a {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+a:hover {
+    text-decoration: none;
+    color: #ffffff;
+}
+
+span {
+    color: #40ff00;
+}
+
+p {
+    display: flex;
+    justify-content: center;
+}

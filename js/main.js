@@ -291,7 +291,6 @@ function deleteTask(taskNumber)
     console.log(taskToDelete);
 
     userId = parseInt(localStorage.getItem('id'));
-    console.log(userId)
 
     const urlToDeleteTasks = 'http://localhost:3333/deleteTask';
 
