@@ -228,19 +228,16 @@ function createTask()
         {
             if (jsonObject['status'] == 500)
             {
-                window.location.href = '../html/somethingWentWrong.html';
+
             }
             else if (jsonObject['status'] == 200)
             {
-                document.getElementById('taskInput').value = '';
-                document.getElementById('taskSpan').innerText = 'Task created';
-                document.getElementById('tasksDiv').innerHTML = '';
-                getTasks();
+                window.location.href = '../html/main.html';
             }
         })
         .catch(error => 
         {
-            window.location.href = '../html/somethingWentWrong.html';
+
         })
     }
 }
@@ -267,12 +264,17 @@ function getTasks()
         }
         else if (jsonObject['status'] == 200)
         {
-            const tasksDiv = document.getElementById('tasksDiv');
+            const taskBlock = document.getElementById('taskBlock');
 
             for (task in jsonObject['tasks']) {
                 taskNum = parseInt(task) + 1;
-                tasksDiv.innerHTML = tasksDiv.innerHTML + 'Task ' + taskNum + ':';
-                tasksDiv.innerHTML = tasksDiv.innerHTML + '<p id="task' + taskNum + '">' + jsonObject['tasks'][task] + '</p>' + '<button onclick="deleteTask(' + taskNum + ')">Delete</button>' + '<br>';
+                taskBlock.innerHTML = taskBlock.innerHTML + '<div id="tasksDiv' + taskNum + '" class="taskItem"></div>';
+
+                taskDiv = document.getElementById('tasksDiv' + taskNum);
+
+                taskDiv.innerHTML = taskDiv.innerHTML + '<p1>Task ' + taskNum + ':</p1>';
+                taskDiv.innerHTML = taskDiv.innerHTML + '<p2 id="task' + taskNum + '">' + jsonObject['tasks'][task] + '</p2>' + '<button onclick="deleteTask(' + taskNum + ')">✘</button>' + '<br>';
+                taskDiv.innerHTML = taskDiv.innerHTML + '</div>';
               }
         }
     })
@@ -311,8 +313,7 @@ function deleteTask(taskNumber)
         }
         else if (jsonObject['status'] == 200)
         {
-            document.getElementById('tasksDiv').innerHTML = '';
-            getTasks();
+            window.location.href = '../html/main.html';
         }
     })
     .catch(error => 
